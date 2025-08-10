@@ -1,43 +1,33 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
   font-weight: 400;
 
   color: rgba(24, 24, 24, 0.87);
   background-color: #ecebeb;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  /*-webkit-font-smoothing: antialiased;*/
-  /*-moz-osx-font-smoothing: grayscale;*/
+  font-size: 10px;
 }
 
 body {
   margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  min-width: 32rem;
+  /*min-height: 100vh;*/
 }
 
 h1 {
-  font-size: 32px;
-  line-height: 1.1;
+  font-size: 3.2rem;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #abaaaa;
+  max-width: fit-content;
+
+  font-size: 1.4rem;
+
+  border-radius: 0.8rem;
+  border-color: transparent;
+  padding: 0.2rem ;
+  background-color: transparent;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
 }
 
 ul {
@@ -47,5 +37,6 @@ ul {
 li {
   display: flex;
   justify-content: space-between;
-  list-style-type: none
+  list-style-type: none;
+  font-size: 1.4rem;
 }
