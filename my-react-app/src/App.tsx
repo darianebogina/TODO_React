@@ -12,6 +12,7 @@ export function App() {
     const addTask = (newText: string) => {
         if (newText.trim() === "") {
             alert("Please enter a new task");
+            return;
         }
         const id: string = Math.floor(Math.random() * 1000).toString();
         const newTask = {id, text: newText};
@@ -36,8 +37,8 @@ const NewTaskForm = ({onAdd}: { onAdd: (newText: string) => void }) => {
         <div>
             <h1>ToDo List</h1>
             <div>
-                <input type="text" placeholder="Add task" onChange={(e) => setNewText(e.target.value)}/>
-                <button onClick={() => onAdd(newText)}>Add</button>
+                <input type="text" placeholder="Add task" value={newText} onChange={(e) => setNewText(e.target.value)}/>
+                <button className="add-btn" onClick={() => {onAdd(newText); setNewText("");}}>Add</button>
             </div>
         </div>
     );
@@ -59,7 +60,7 @@ const TaskRow = ({task, onDelete}: { task: Task, onDelete: (idToDelete: string) 
     return (
         <li>
             <p>{task.text}</p>
-            <button onClick={() => onDelete(task.id)}>&#10060;</button>
+            <button className="delete-btn" onClick={() => onDelete(task.id)}>&#10060;</button>
         </li>
     );
 }
