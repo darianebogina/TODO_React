@@ -12,6 +12,7 @@ export function App() {
     const [loading, setLoading] = useState(true);
     const deleteUsed = useRef(false);
 
+    const broadcast = useRef(new BroadcastChannel("test_channel"));
     const addTask = (newText: string) => {
         if (newText.trim() === "") {
             alert("Please enter a new task");
@@ -20,12 +21,14 @@ export function App() {
         const id: string = Math.floor(Math.random() * 1000).toString();
         const newTask = {id, text: newText};
         setTasks(prev => [newTask, ...prev]);
+        broadcast.current.postMessage("Update tasks");
     }
 
     const deleteTask = (idToDelete: string) => {
         deleteUsed.current = true;
         setTasks(prev => prev.filter((task: Task) => task.id !== idToDelete));
-    }
+        broadcast.current.postMessage("Update tasks");
+    };
 
     // Week 3: day 1
     useEffect(() => {
@@ -46,13 +49,14 @@ export function App() {
         console.log("useEffect (Parent)")
         updateTasksFromLS();
 
-        window.onstorage = () => {
-            updateTasksFromLS();
-        };
+        // window.onstorage = () => {
+        //     updateTasksFromLS();
+        // };
 
-        return () => {
-            console.log("useEffect (Clean-Up Parent)")
-        }
+        broadcast.current.addEventListener("message", () => {
+            updateTasksFromLS();
+        });
+        return () => broadcast.current.close();
     }, []);
 
     useLayoutEffect(() => {
