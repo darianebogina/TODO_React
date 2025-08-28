@@ -1,4 +1,4 @@
-import {useState, useEffect, useLayoutEffect,useRef} from 'react'
+import {useState, useEffect, useLayoutEffect, useRef} from 'react'
 import './App.css'
 
 type Task = {
@@ -7,6 +7,7 @@ type Task = {
 }
 
 export function App() {
+
     const [tasks, setTasks] = useState<Array<Task>>([]);
     const [loading, setLoading] = useState(true);
     const deleteUsed = useRef(false);
@@ -28,7 +29,6 @@ export function App() {
 
     // Week 3: day 1
     useEffect(() => {
-        // console.log("useEffect on tasks change")
         if ((deleteUsed.current && tasks.length === 0) || tasks.length !== 0) {
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
@@ -50,18 +50,19 @@ export function App() {
         console.log("useLayoutEffect (Parent)");
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 1500)
+        }, 500)
 
         return () => {
             console.log("useLayoutEffect (Clean-Up Parent)");
-            clearTimeout(timer);}
+            clearTimeout(timer);
+        }
     }, [])
 
     //
     return (
         <>
             <NewTaskForm onAdd={addTask}/>
-            {loading ? <p> Loading...</p> : <TasksList taskList={tasks} deleteTask={deleteTask} />}
+            {loading ? <p> Loading...</p> : <TasksList taskList={tasks} deleteTask={deleteTask}/>}
         </>
     )
 }
