@@ -34,12 +34,21 @@ export function App() {
         }
     }, [tasks]);
 
-    useEffect(() => {
-        console.log("useEffect (Parent)")
+    const updateTasksFromLS = () => {
         const tasksString = localStorage.getItem('tasks');
+
         if (tasksString) {
             setTasks(JSON.parse(tasksString));
         }
+    }
+
+    useEffect(() => {
+        console.log("useEffect (Parent)")
+        updateTasksFromLS();
+
+        window.onstorage = () => {
+            updateTasksFromLS();
+        };
 
         return () => {
             console.log("useEffect (Clean-Up Parent)")
