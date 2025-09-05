@@ -1,4 +1,4 @@
-import {useRef, useState, useEffect, useLayoutEffect} from "react";
+import {useRef, useState, useEffect, useLayoutEffect, useCallback} from "react";
 import {createTask, saveTasks, loadTasks} from "./lib";
 import type {Task} from "./types";
 
@@ -9,7 +9,7 @@ export function useTasks() {
 
     const broadcast = useRef(new BroadcastChannel("test_channel"));
 
-    const addTask = (newText: string) => {
+    const addTask = useCallback((newText: string) => {
         if (newText.trim() === "") {
             alert("Please enter a new task");
             return;
@@ -18,17 +18,25 @@ export function useTasks() {
 
         setTasks(prev => [newTask, ...prev]);
         broadcast.current.postMessage("Update tasks");
-    }
+    }, []);
 
-    const deleteTask = (idToDelete: string) => {
+    const deleteTask = useCallback((idToDelete: string) => {
         deleteUsed.current = true;
+
         setTasks(prev => {
-            const taskToDelete = prev.find((task) => task.id === idToDelete);
-            taskToDelete!.isDone = true;
-            return [...prev];
+            const newTasks = [...prev];
+
+            const task = newTasks.find(task => task.id === idToDelete);
+            if (task) {
+                const updatedTask = { ...task};
+                updatedTask.isDone = true;
+                const index = newTasks.indexOf(task);
+                newTasks[index] = updatedTask;
+            }
+            return newTasks;
         });
         broadcast.current.postMessage("Update tasks");
-    };
+    }, []);
 
     useEffect(() => {
         if ((deleteUsed.current && tasks.length === 0) || tasks.length !== 0) {
