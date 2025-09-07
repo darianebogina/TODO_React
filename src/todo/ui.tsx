@@ -1,6 +1,6 @@
 import {memo, useState} from "react";
 import type {Task, Filter} from "./types.ts";
-import {useTasks} from "./model.ts";
+import {useTasks, getFilteredTasks} from "./model.ts";
 import '../App.css'
 
 export function App() {
@@ -51,18 +51,13 @@ const TasksList = ({taskList, deleteTask, filterTask}: {
     deleteTask: (idToDelete: string) => void,
     filterTask: Filter
 }) => {
+
+    const filteredTasks = getFilteredTasks(taskList, filterTask);
+
     return (
         <div>
             <ul>
-                {taskList.filter((task) => {
-                    if (filterTask === "active") {
-                        return !task.isDone;
-                    } else if (filterTask === "done") {
-                        return task.isDone;
-                    } else {
-                        return true;
-                    }
-                }).map(task => (
+                {filteredTasks.map(task => (
                     <TaskRow key={task.id} task={task} onDelete={deleteTask}/>
                 ))}
             </ul>

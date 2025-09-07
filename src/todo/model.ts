@@ -1,6 +1,6 @@
 import {useRef, useState, useEffect, useLayoutEffect, useCallback} from "react";
 import {createTask, saveTasks, loadTasks} from "./lib";
-import type {Task} from "./types";
+import type {Task, Filter} from "./types";
 
 export function useTasks() {
     const [tasks, setTasks] = useState<Array<Task>>([]);
@@ -67,4 +67,16 @@ export function useTasks() {
         }
     }, [])
     return {tasks, loading, addTask, deleteTask};
+}
+
+export const getFilteredTasks = (tasks: Task[], filter: Filter): Task[] => {
+    return tasks.filter((task) => {
+        if (filter === "active") {
+            return !task.isDone;
+        } else if (filter === "done") {
+            return task.isDone;
+        } else {
+            return true;
+        }
+    })
 }
